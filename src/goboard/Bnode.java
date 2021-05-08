@@ -13,6 +13,7 @@ public class Bnode {
 	private int y;
 	private int type;
 	private AGroup group;
+	private IBoard board;
 	
 	public Bnode(int x,int y) {
 		this.x=x;
@@ -22,5 +23,20 @@ public class Bnode {
 		dnode.x=x;
 		dnode.y=y;
 		return dnode;
+	}
+	public int x() {
+		return x;
+	}
+	public int y() {
+		return y;
+	}
+	public int type() {
+		return type;
+	}
+	public AGroup group() {
+		return group;
+	}
+	public IBoard board() {
+		return board;
 	}
 }
