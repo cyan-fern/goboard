@@ -15,6 +15,7 @@ public interface TypeS {
 			new StoneType(false,false,true),
 			new StoneType(false,false,true),
 	};
+	static Adjacencylist adj=Adjacencylist.normal;
 	/**
 	 * Types: (as of now)
 	 * 0:empty

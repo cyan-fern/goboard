@@ -8,7 +8,7 @@ public interface IBoard {
 	 * @param y
 	 * @return validity
 	 */
-	public boolean valid(int x,int y);
+	public boolean isvalid(int x,int y);
 	/**
 	 * Returns false if placing the specified stone would create an invalid group
 	 * (All groups should have at least one tributary)
@@ -25,7 +25,14 @@ public interface IBoard {
 	 * @param x
 	 * @param y
 	 * @param type
-	 * @return
+	 * @return success
 	 */
 	public boolean place(int x,int y,int type);
+	/**
+	 * Returns the type of the stone at the specified location
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public StoneType gettypeat(int x,int y);
 }
