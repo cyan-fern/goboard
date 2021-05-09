@@ -29,6 +29,13 @@ public interface IBoard {
 	 */
 	public boolean place(int x,int y,int type);
 	/**
+	 * Returns the stone at the specified location
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public Bnode getstoneat(int x,int y);
+	/**
 	 * Returns the type of the stone at the specified location
 	 * @param x
 	 * @param y

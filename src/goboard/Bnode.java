@@ -8,20 +8,29 @@ package goboard;
  *
  */
 public class Bnode {
-	public static Bnode dnode = new Bnode(0,0);
+	public static Bnode dnode = new Bnode(0,0,null);
 	private int x;
 	private int y;
-	private int type;
-	private AGroup group;
+	int type;
+	AGroup group;
 	private IBoard board;
 	
-	public Bnode(int x,int y) {
+	public Bnode(int x,int y,IBoard board) {
 		this.x=x;
 		this.y=y;
+		this.board=board;
 	}
-	public Bnode falsenode(int x,int y) {
+	public Bnode(int x,int y,IBoard board,int type,AGroup group) {
+		this.x=x;
+		this.y=y;
+		this.board=board;
+		this.type=type;
+		this.group=group;
+	}
+	public static Bnode falsenode(int x,int y,IBoard board) {
 		dnode.x=x;
 		dnode.y=y;
+		dnode.board=board;
 		return dnode;
 	}
 	public int x() {
@@ -30,13 +39,10 @@ public class Bnode {
 	public int y() {
 		return y;
 	}
-	public int type() {
-		return type;
-	}
-	public AGroup group() {
-		return group;
-	}
 	public IBoard board() {
 		return board;
+	}
+	public Bnode getoffs(int x,int y,Adjacencylist list,int entry) {
+		return board.getstoneat(x+list.getx(entry),y+list.gety(entry));
 	}
 }
