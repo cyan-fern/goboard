@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author reverse
  *
  */
-public abstract class AGroup {
+public /*abstract*/ class AGroup {
 	ArrayList<Bnode> members;
 	int neyes;
 	//HashSet<Bnode> eyes;
