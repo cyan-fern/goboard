@@ -27,7 +27,23 @@ public interface IBoard {
 	 * @param type
 	 * @return success
 	 */
-	public boolean place(int x,int y,int type);
+	public void place(int x,int y,int type);
+//	/**
+//	 * minimal placement method for removing stones
+//	 * @param x
+//	 * @param y
+//	 * @param type
+//	 * @return success
+//	 */
+//	public void captureplace(Bnode ptarget,int type);
+//	/**
+//	 * minimal placement method
+//	 * @param x
+//	 * @param y
+//	 * @param type
+//	 * @return success
+//	 */
+//	public void simpleplace(int x,int y,int type);
 	/**
 	 * Returns the stone at the specified location
 	 * @param x

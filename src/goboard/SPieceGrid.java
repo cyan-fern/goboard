@@ -4,10 +4,13 @@ public class SPieceGrid {
 	int xdim;
 	Bnode[] pieces;
 	
-	public SPieceGrid(int x,int y) {
+	public SPieceGrid(int x,int y,IBoard board,int empty) {
 		xdim=x;
 		int size=x*y;
 		pieces=new Bnode[size];
+		for(int i=0;i<size;i++) {
+			pieces[i]=new Bnode(x,y,board,empty,null);
+		}
 	}
 	public Bnode getstone(int x,int y) {
 		return pieces[xdim*y+x];
