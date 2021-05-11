@@ -55,7 +55,6 @@ public class GoBoard implements IBoard,TypeS {
 
 	@Override
 	public void place(int x, int y, int type) {
-		//System.out.println("type"+type);
 		//assume placement is valid, and thus that live editing is permissible
 		Bnode ptarget=getstoneat(x,y),look;
 		ptarget.type=type;
@@ -64,10 +63,7 @@ public class GoBoard implements IBoard,TypeS {
 		int fedges=0;
 		for(int i=0;i<adj.dim;i++) {
 			look=ptarget.getoffs(adj,i);
-			System.out.println("look"+look.type);
-			if (look.gettype().isempty()) {
-				fedges++;
-				/* System.out.println("empty"); */}
+			if (look.gettype().isempty()) {fedges++;}
 			if(look.type==type&&types[type].isconnecting()) {
 				//TODO: breaks if replacing a connecting stone, fix this
 				if(ptarget.group==null) {

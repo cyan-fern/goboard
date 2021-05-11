@@ -34,7 +34,6 @@ public class Bnode {
 		return y;
 	}
 	public StoneType gettype() {
-		//System.out.println(type);
 		return TypeS.types[type];
 	}
 	public IBoard board() {
