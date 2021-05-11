@@ -16,13 +16,16 @@ import javax.swing.JPanel;
 public class GoPanel extends JPanel {
 	private GoBoard board;
     int xsel=0,ysel=0,elwidth,elheight,
-    		cxdim,cydim,
-    		seltype;
+    		cxdim=1,cydim=1,
+    		seltype=TypeS.stone_1;
     boolean selvalid=true;
+    //I know this isn't how you're supposed to do things, but how bad could it be?
+    //also I've gone through a lot at this point, this is starting to get to me.
+    Graphics gra;
 
 
     public GoPanel(int ewidth, int eheight) {
-    	board=new GoBoard(ewidth,eheight);
+    	board=new GoBoard(ewidth,eheight,this);
     	this.elwidth=ewidth;
     	this.elheight=eheight;
     	
@@ -33,8 +36,7 @@ public class GoPanel extends JPanel {
         this.setFocusable(true);
 
         this.addComponentListener(new ComponentListener() {
-        	public void componentHidden(ComponentEvent e) {
-        		updatedim(e.getComponent());}
+        	public void componentHidden(ComponentEvent e) {}
             public void componentMoved(ComponentEvent e) {}
             public void componentResized(ComponentEvent e) {
                 updatedim(e.getComponent());}
@@ -69,19 +71,18 @@ public class GoPanel extends JPanel {
     private void initializeKeyListener() {
         addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent e) {
-        		int dir;
             	switch(e.getKeyCode()) {
             	case(KeyEvent.VK_LEFT):
-            		dir=0;
             	case(KeyEvent.VK_UP):
-            		dir=1;
             	case(KeyEvent.VK_RIGHT):
-            		dir=2;
             	case(KeyEvent.VK_DOWN):
-            		dir=3;
-            		movsel(dir);
+            	case(KeyEvent.VK_1):
+            	case(KeyEvent.VK_2):
+            	case(KeyEvent.VK_SPACE):
+        			movsel(e.getKeyCode());
         			break;
-            	}}
+            	}
+            	redrawsel();}
 			public void keyReleased(KeyEvent e){}
             public void keyTyped(KeyEvent e) {}
         });
@@ -90,56 +91,102 @@ public class GoPanel extends JPanel {
 		//fix this
 		redrawdesel();
 		switch(dir) {
-		case(0):
+		case(KeyEvent.VK_LEFT):
 			xsel--;
 			break;
-		case(1):
+		case(KeyEvent.VK_UP):
 			ysel--;
 			break;
-		case(2):
+		case(KeyEvent.VK_RIGHT):
 			xsel++;
 			break;
-		case(3):
+		case(KeyEvent.VK_DOWN):
 			ysel++;
 			break;
+		case(KeyEvent.VK_1):
+			seltype=TypeS.stone_1;
+			break;
+		case(KeyEvent.VK_2):
+			seltype=TypeS.stone_2;
+			break;
+		case(KeyEvent.VK_SPACE):
+			if(selvalid) {board.place(xsel,ysel,seltype);}
+			break;
 		}
+		selvalid=board.validplace(xsel,ysel,seltype);
 		redrawsel();
 	}
 
+	
     private void redrawdesel() {
-		// TODO Auto-generated method stub
-		
+		//board.getstoneat(xsel,ysel).redraw();
+    	repaint();
 	}
 	private void redrawsel() {
 		redrawdesel();
+    	//gra.drawOval(xsel*cxdim+10,ysel*cydim+10,cxdim-20,cydim-20);
 		//TODO: sel
 		//temporary thing, why implement clipping if you won't use it you idiot
-		repaint();
+		//repaint();
 	}
 	
 	
 	@Override
-    public void paint(Graphics g) {
-		int x1=g.getClipBounds().x/cxdim;
-		int y1=g.getClipBounds().y/cydim;
-		int x2=x1+g.getClipBounds().width/cxdim+1;
-		int y2=y1+g.getClipBounds().height/cydim+1;
-		Bnode stone;int ix,stx=x1*elwidth,sty=y1*elheight;
-    	for(int iy=y1;iy<y2;iy++) {
-    		for(ix=x1;ix<x2;ix++) {
+	public void paint(Graphics g) {
+		secpaint(g);
+	}
+	
+	
+	public void fullpaint(Graphics g) {
+		g.setColor(Color.green);
+		g.fillRect(0,0,elwidth*cxdim,elheight*cydim);
+		Bnode stone;int ix,stx=0,sty=0;
+    	for(int iy=0;iy<elheight;iy++) {
+    		stx=0;
+    		for(ix=0;ix<elwidth;ix++) {
     			//keep things simple for now.
     			stone=board.getstoneat(ix,iy);
-    			if(stone.type==board.empty) {g.setColor(Color.gray);}
-    			else if(stone.type==board.stone_1) {g.setColor(Color.white);}
-    			else if(stone.type==board.stone_2) {g.setColor(Color.black);}
+    			if(stone.type==TypeS.empty) {g.setColor(Color.gray);}
+    			else if(stone.type==TypeS.stone_1) {g.setColor(Color.white);}
+    			else if(stone.type==TypeS.stone_2) {g.setColor(Color.black);}
     			g.fillOval(stx,sty,cxdim,cydim);
-    			stx+=cydim;
+    			stx+=cxdim;
     		}
-    		sty+=cxdim;
+    		sty+=cydim;
     	}
 		//just draw the selection box bc it's easy
 		//remember to do this properly later
     	g.setColor(selvalid?Color.blue:Color.red);
-    	g.drawRect(xsel*cxdim,ysel*cydim,cxdim,cydim);
+    	g.drawOval(xsel*cxdim+10,ysel*cydim+10,cxdim-20,cydim-20);
+	}
+	
+    public void secpaint(Graphics g) {
+		this.gra=g;
+		int x1=g.getClipBounds().x/cxdim;
+		int y1=g.getClipBounds().y/cydim;
+		int x2=x1+g.getClipBounds().width/cxdim+1;
+		int y2=y1+g.getClipBounds().height/cydim+1;
+		if(x2>elwidth) {x2=elwidth;}
+		if(y2>elheight) {y2=elheight;}
+		g.setColor(Color.green);
+		g.fillRect(x1*cxdim,y1*cydim,(x2)*cxdim,(y2)*cydim);
+		Bnode stone;int ix,stx=x1*elwidth,sty=y1*elheight;
+    	for(int iy=y1;iy<y2;iy++) {
+    		stx=x1*elwidth;
+    		for(ix=x1;ix<x2;ix++) {
+    			//keep things simple for now.
+    			stone=board.getstoneat(ix,iy);
+    			if(stone.type==TypeS.empty) {g.setColor(Color.gray);}
+    			else if(stone.type==TypeS.stone_1) {g.setColor(Color.white);}
+    			else if(stone.type==TypeS.stone_2) {g.setColor(Color.black);}
+    			g.fillOval(stx,sty,cxdim,cydim);
+    			stx+=cxdim;
+    		}
+    		sty+=cydim;
+    	}
+		//just draw the selection box bc it's easy
+		//remember to do this properly later
+    	g.setColor(selvalid?Color.blue:Color.red);
+    	g.drawOval(xsel*cxdim+10,ysel*cydim+10,cxdim-20,cydim-20);
 	}
 }

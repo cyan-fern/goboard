@@ -4,7 +4,7 @@ public class SPieceGrid {
 	int xdim;
 	Bnode[] pieces;
 	
-	public SPieceGrid(int x,int y,IBoard board,int empty) {
+	public SPieceGrid(int x,int y,GoBoard board,int empty) {
 		xdim=x;
 		int size=x*y;
 		pieces=new Bnode[size];

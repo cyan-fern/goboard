@@ -7,11 +7,13 @@ public class GoBoard implements IBoard,TypeS {
 	int ydim;
 	private SPieceGrid pieces;
 	Bnode oob=new Bnode(0,0,this,st_full,null);
+	public GoPanel parent;
 	
-	public GoBoard(int xdim,int ydim) {
+	public GoBoard(int xdim,int ydim,GoPanel parent) {
 		this.xdim=xdim;
 		this.ydim=ydim;
 		this.pieces=new SPieceGrid(xdim,ydim,this,0);
+		this.parent=parent;
 	}
 
 	@Override

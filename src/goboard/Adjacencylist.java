@@ -14,7 +14,8 @@ public class Adjacencylist {
 	int[] list;
 	
 	public Adjacencylist(int num) {
-		dim=num*2;
+		dim=num;
+		this.list=new int[dim*2];
 	}
 	public void set(int pos,int x,int y) {
 		list[pos*2]=x;
