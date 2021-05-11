@@ -13,15 +13,14 @@ import java.awt.event.MouseWheelEvent;
 
 import javax.swing.JPanel;
 
+
+@SuppressWarnings("serial")//the difficulties of extending something serializable and not being serializable yourself, I tell you.
 public class GoPanel extends JPanel {
 	private GoBoard board;
     int xsel=0,ysel=0,elwidth,elheight,
     		cxdim=1,cydim=1,
     		seltype=TypeS.stone_1;
     boolean selvalid=true;
-    //I know this isn't how you're supposed to do things, but how bad could it be?
-    //also I've gone through a lot at this point, this is starting to get to me.
-    Graphics gra;
 
 
     public GoPanel(int ewidth, int eheight) {
@@ -133,7 +132,7 @@ public class GoPanel extends JPanel {
 	
 	@Override
 	public void paint(Graphics g) {
-		secpaint(g);
+		fullpaint(g);
 	}
 	
 	
@@ -161,7 +160,6 @@ public class GoPanel extends JPanel {
 	}
 	
     public void secpaint(Graphics g) {
-		this.gra=g;
 		int x1=g.getClipBounds().x/cxdim;
 		int y1=g.getClipBounds().y/cydim;
 		int x2=x1+g.getClipBounds().width/cxdim+1;

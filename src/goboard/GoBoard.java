@@ -24,7 +24,7 @@ public class GoBoard implements IBoard,TypeS {
 		//TODO: if any connecting stones are replaceable, this will break. fix this.
 		if(!gettypeat(x,y).isreplaceable()) {return false;}
 		if(!types[type].isconnecting()) {return true;}//not connecting=no groups=no tributaries=no invalidity
-		int rempty=gettypeat(x,y).isempty()?0:1;
+		int rempty=gettypeat(x,y).isempty()?1:0;
 		int tfedge=0;
 		int fedge=0;
 		Bnode ptarget=getstoneat(x,y),look;
@@ -55,10 +55,9 @@ public class GoBoard implements IBoard,TypeS {
 
 	@Override
 	public void place(int x, int y, int type) {
-		System.out.println("type"+type);
+		//System.out.println("type"+type);
 		//assume placement is valid, and thus that live editing is permissible
 		Bnode ptarget=getstoneat(x,y),look;
-		System.out.println("ptype"+ptarget.type);
 		ptarget.type=type;
 		ptarget.group=null;
 		ptarget.pending=true;
@@ -81,13 +80,14 @@ public class GoBoard implements IBoard,TypeS {
 					ptarget.group.merge(look.group);
 				}
 				else {
+					ptarget.group.fedges--;
 				}
 			}
 			else if(look.gettype().isconnecting()) {
 				look.group.fedges-=1;
 				look.group.enc++;
 				if(look.group.fedges<=fedgetokill) {
-					ptarget.group.fedges+=look.group.enc;
+					fedges+=look.group.enc;
 					look.group.remove(empty,adj);
 				}
 			}
@@ -95,7 +95,7 @@ public class GoBoard implements IBoard,TypeS {
 		if(types[type].isconnecting()) {
 			if(ptarget.group==null) {ptarget.group=new AGroup(ptarget);}
 			ptarget.group.fedges+=fedges;
-			//System.out.println("fedges: "+ptarget.group.fedges);
+			System.out.println("fedges: "+ptarget.group.fedges);
 		}
 		ptarget.resetsthrough(adj,adj.dim);
 		ptarget.pending=false;
