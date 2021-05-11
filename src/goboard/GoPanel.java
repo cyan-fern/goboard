@@ -25,7 +25,7 @@ public class GoPanel extends JPanel {
 
 
     public GoPanel(int ewidth, int eheight) {
-    	board=new GoBoard(ewidth,eheight,this);
+    	board=new GoBoard(ewidth,eheight);
     	this.elwidth=ewidth;
     	this.elheight=eheight;
     	

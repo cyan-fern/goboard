@@ -8,8 +8,12 @@ public class SPieceGrid {
 		xdim=x;
 		int size=x*y;
 		pieces=new Bnode[size];
-		for(int i=0;i<size;i++) {
-			pieces[i]=new Bnode(x,y,board,empty,null);
+		int i=0;
+		for(int iy=0;iy<y;iy++) {
+			for(int ix=0;ix<x;ix++) {
+				pieces[i]=new Bnode(ix,iy,board,empty,null);
+				i++;
+			}
 		}
 	}
 	public Bnode getstone(int x,int y) {

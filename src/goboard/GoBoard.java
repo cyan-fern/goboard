@@ -7,13 +7,11 @@ public class GoBoard implements IBoard,TypeS {
 	int ydim;
 	private SPieceGrid pieces;
 	Bnode oob=new Bnode(0,0,this,st_full,null);
-	public GoPanel parent;
 	
-	public GoBoard(int xdim,int ydim,GoPanel parent) {
+	public GoBoard(int xdim,int ydim) {
 		this.xdim=xdim;
 		this.ydim=ydim;
 		this.pieces=new SPieceGrid(xdim,ydim,this,0);
-		this.parent=parent;
 	}
 
 	@Override
@@ -57,15 +55,20 @@ public class GoBoard implements IBoard,TypeS {
 
 	@Override
 	public void place(int x, int y, int type) {
+		System.out.println("type"+type);
 		//assume placement is valid, and thus that live editing is permissible
 		Bnode ptarget=getstoneat(x,y),look;
+		System.out.println("ptype"+ptarget.type);
 		ptarget.type=type;
 		ptarget.group=null;
 		ptarget.pending=true;
 		int fedges=0;
 		for(int i=0;i<adj.dim;i++) {
 			look=ptarget.getoffs(adj,i);
-			if(look.gettype().isempty()) {fedges++;}
+			System.out.println("look"+look.type);
+			if (look.gettype().isempty()) {
+				fedges++;
+				/* System.out.println("empty"); */}
 			if(look.type==type&&types[type].isconnecting()) {
 				//TODO: breaks if replacing a connecting stone, fix this
 				if(ptarget.group==null) {
@@ -88,6 +91,11 @@ public class GoBoard implements IBoard,TypeS {
 					look.group.remove(empty,adj);
 				}
 			}
+		}
+		if(types[type].isconnecting()) {
+			if(ptarget.group==null) {ptarget.group=new AGroup(ptarget);}
+			ptarget.group.fedges+=fedges;
+			//System.out.println("fedges: "+ptarget.group.fedges);
 		}
 		ptarget.resetsthrough(adj,adj.dim);
 		ptarget.pending=false;

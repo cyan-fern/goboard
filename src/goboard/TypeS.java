@@ -8,7 +8,7 @@ package goboard;
 public interface TypeS {
 	static StoneType[] types = new StoneType[] {
 			new StoneType(true,true,false),//empty
-			new StoneType(true,false,false),//OOB
+			new StoneType(false,false,false),//OOB
 			new StoneType(true,false,false),
 			new StoneType(false,false,true),//stone type 1
 			new StoneType(false,false,true),//stone type 2

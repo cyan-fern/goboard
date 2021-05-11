@@ -21,6 +21,7 @@ public /*abstract*/ class AGroup {
 	public AGroup(Bnode member) {
 		this.members=new ArrayList<Bnode>();
 		members.add(member);
+		fedges=0;
 	}
 	public void add(Bnode node) {
 		members.add(node);
